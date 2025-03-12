@@ -1,0 +1,20 @@
+{
+    "products": [
+        {
+            "id": "1",
+            "name": "Apel",
+            "price": 25000,
+            "unit": "Kg"
+        }
+    ],
+    "category": [
+        {
+            "id": "1",
+            "name": "Buah & Sayur"
+        },
+        {
+            "id": "2", 
+            "name": "Elektronik"
+        }
+    ]
+}
