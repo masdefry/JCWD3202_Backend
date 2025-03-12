@@ -96,6 +96,30 @@ app.put('/api/products/:id', async (req: Request, res: Response) => {
   }
 });
 
+app.delete('/api/products/:id', async(req: Request, res: Response) => {
+  try {
+    const {id} = req.params 
+
+    let findData: any = await fs.readFile('./src/db/db.json', 'utf-8');
+    findData = await JSON.parse(findData); // { products: [{}] }
+
+    const {products} = findData 
+    const findIndexOfProduct = products.findIndex((product: any) => product.id === Number(id))
+    products.splice(findIndexOfProduct, 1)
+    findData.products = products 
+
+    await fs.writeFile('./src/db/db.json', JSON.stringify(findData));
+
+    res.status(200).json({
+      success: true, 
+      message: `Delete Product with Id ${id} Success`, 
+      data: null
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });

@@ -1,0 +1,12 @@
+{
+    "expenses": [
+        {
+            "id": 1, 
+            "title": "Bensin",
+            "nominal": 35000,
+            "type": "expense", 
+            "category": "transport", 
+            "date": "03-11-2025"
+        }
+    ]
+}

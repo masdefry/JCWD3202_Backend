@@ -2,7 +2,6 @@
   "products": [
     { "id": 1, "name": "Lidah Kucing", "Price": 125000, "unit": "Pack" },
     { "id": 2, "name": "Nastar", "Price": 150000, "unit": "Pack" },
-    { "id": 3, "name": "Kacang Goreng", "Price": 150000, "unit": "Pack" },
-    { "id": 4, "name": "Kukis Keju", "price": 130000, "unit": "Pack" }
+    { "id": 3, "name": "Kacang Goreng", "Price": 150000, "unit": "Pack" }
   ]
 }
