@@ -6,7 +6,15 @@
             "nominal": 35000,
             "type": "expense", 
             "category": "transport", 
-            "date": "03-11-2025"
+            "date": "2025-03-11"
+        },
+        {
+            "id": 2, 
+            "title": "Makan",
+            "nominal": 135000,
+            "type": "expense", 
+            "category": "acomodation", 
+            "date": "2025-03-15"
         }
     ]
 }

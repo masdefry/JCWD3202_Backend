@@ -14,17 +14,21 @@ Hello, JCWD-3202!
 
                 npm i -D typescript concurrently nodemon
 
-        4. Initiate Typescript Configuration
+        4. Install MySql2
+
+                npm i mysql2
+
+        5. Initiate Typescript Configuration
 
                 npx tsc --init
 
-        5. Edit `tsconfig.json`:
+        6. Edit `tsconfig.json`:
 
                 - Uncomment rootDir:  "rootDir": "./src"
 
                 - Uncomment outDir:   "outDir": "./dist"
 
-        6. Replace Property `scripts` on `package.json` with this Code:
+        7. Replace Property `scripts` on `package.json` with this Code:
 
                 "scripts": {
                         "build": "npx tsc",
@@ -32,6 +36,6 @@ Hello, JCWD-3202!
                         "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
                 },
 
-        7. Running Express Typescript Projects
+        8. Running Express Typescript Projects
 
                 npm run dev

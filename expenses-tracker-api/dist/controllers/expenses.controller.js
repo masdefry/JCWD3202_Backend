@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findExpenseById = void 0;
+exports.findTotalExpensesByFilter = exports.findExpenseById = void 0;
 const promises_1 = __importDefault(require("fs/promises"));
 const findExpenseById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -32,3 +32,22 @@ const findExpenseById = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.findExpenseById = findExpenseById;
+const findTotalExpensesByFilter = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { startDate, endDate, category } = req.query;
+        let findData = yield promises_1.default.readFile('./src/db/db.json');
+        findData = yield JSON.parse(findData);
+        const { expenses } = findData;
+        const findExpense = expenses.filter((item) => (item.date >= startDate && item.date <= endDate) || item.category === category);
+        const totalExpenses = findExpense.reduce((sum, curr) => sum + curr.nominal, 0);
+        res.status(200).json({
+            success: true,
+            message: `Get Total Expenses with Date Range ${startDate} - ${endDate} Success`,
+            data: totalExpenses
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+exports.findTotalExpensesByFilter = findTotalExpensesByFilter;
