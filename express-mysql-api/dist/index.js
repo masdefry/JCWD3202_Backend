@@ -17,3 +17,5 @@ app.use('/api/passengers', passengers_router_1.default);
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
+// Exercise:
+// Buatlah REST API 

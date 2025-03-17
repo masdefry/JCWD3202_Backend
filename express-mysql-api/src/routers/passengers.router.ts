@@ -1,8 +1,15 @@
 import { Router } from 'express';
 const passengersRouter = Router();
-import { createPassenger, findPassengers } from '../controllers/passengers.controller';
+import {
+  createPassenger,
+  deletePassenger,
+  findPassengers,
+  updatePassenger,
+} from '../controllers/passengers.controller';
 
 passengersRouter.get('/', findPassengers);
-passengersRouter.post('/', createPassenger)
+passengersRouter.post('/', createPassenger);
+passengersRouter.put('/:passengerId', updatePassenger);
+passengersRouter.delete('/:passengerId', deletePassenger)
 
 export default passengersRouter;

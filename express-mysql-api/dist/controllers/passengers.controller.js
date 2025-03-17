@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createPassenger = exports.findPassengers = void 0;
+exports.deletePassenger = exports.updatePassenger = exports.createPassenger = exports.findPassengers = void 0;
 const connection_1 = __importDefault(require("../connection"));
 const util_1 = require("util");
 const query = (0, util_1.promisify)(connection_1.default.query).bind(connection_1.default);
@@ -34,7 +34,7 @@ const createPassenger = (req, res) => __awaiter(void 0, void 0, void 0, function
     try {
         const { Survived, Pclass, Name, Sex, Age, SibSp, Parch, Ticket, Fare, Cabin, Embarked, } = req.body;
         const findPassengers = yield query({
-            sql: 'SELECT PassengerId from passengers ORDER BY PassengerId DESC'
+            sql: 'SELECT PassengerId from passengers ORDER BY PassengerId DESC',
         });
         console.log(findPassengers);
         yield query({
@@ -87,3 +87,73 @@ const createPassenger = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.createPassenger = createPassenger;
+const updatePassenger = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { Survived, Pclass, Name, Sex, Age, SibSp, Parch, Ticket, Fare, Cabin, Embarked, } = req.body;
+        const { passengerId } = req.params;
+        yield query({
+            sql: `UPDATE passengers SET Survived = ?,
+      Pclass = ?,
+      Name = ?,
+      Sex = ?,
+      Age = ?,
+      SibSp = ?,
+      Parch = ?,
+      Ticket = ?,
+      Fare = ?,
+      Cabin = ?,
+      Embarked = ? WHERE PassengerId = ?`,
+            values: [
+                Survived,
+                Pclass,
+                Name,
+                Sex,
+                Age,
+                SibSp,
+                Parch,
+                Ticket,
+                Fare,
+                Cabin,
+                Embarked,
+                passengerId
+            ],
+        });
+        res.status(200).json({
+            success: true,
+            message: `Update Passenger with Id ${passengerId} Success`,
+            data: null
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+exports.updatePassenger = updatePassenger;
+const deletePassenger = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { passengerId } = req.params;
+        const findPassenger = yield query({
+            sql: `SELECT * FROM passengersss WHERE PassengerId = ?`,
+            values: [passengerId]
+        });
+        if (findPassenger.length === 0)
+            throw { isExpose: true, message: `Passenger with Id ${passengerId} Not Found` };
+        yield query({
+            sql: 'DELETE FROM passengers WHERE PassengerId = ?',
+            values: [passengerId]
+        });
+        res.status(200).json({
+            success: true,
+            message: `Delete Passenger with Id ${passengerId} Success`,
+            data: null
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.isExpose ? error.message : 'Something Went Wrong!',
+            data: null
+        });
+    }
+});
+exports.deletePassenger = deletePassenger;

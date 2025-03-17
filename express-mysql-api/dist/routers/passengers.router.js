@@ -5,4 +5,6 @@ const passengersRouter = (0, express_1.Router)();
 const passengers_controller_1 = require("../controllers/passengers.controller");
 passengersRouter.get('/', passengers_controller_1.findPassengers);
 passengersRouter.post('/', passengers_controller_1.createPassenger);
+passengersRouter.put('/:passengerId', passengers_controller_1.updatePassenger);
+passengersRouter.delete('/:passengerId', passengers_controller_1.deletePassenger);
 exports.default = passengersRouter;
