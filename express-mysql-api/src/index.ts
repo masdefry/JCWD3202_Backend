@@ -1,5 +1,4 @@
 import express, { Express, Request, Response } from 'express';
-import passengersRouter from './routers/passengers.router';
 import filmRouter from './routers/film.router';
 
 const app: Express = express();
@@ -13,7 +12,6 @@ app.get('/', (req: Request, res: Response) => {
   res.send('<h1>Welcome to Express-Typescript API</h1>');
 });
 
-app.use('/api/passengers', passengersRouter);
 app.use('/api/films', filmRouter);
 
 app.listen(port, () => {
