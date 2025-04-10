@@ -34,10 +34,10 @@ export default function RootLayout({
       >
         <TanstackProvider>
           <ToastContainer />
-          <div className='hidden sm:block w-[500px] max-w-screen-md min-h-screen'>
+          <div className='hidden min-[320px]:block w-[500px] max-w-screen-md min-h-screen'>
             {children}
           </div>
-          <div className='p-10 block sm:hidden'>
+          <div className='p-10 min-[320px]:hidden'>
             <h1 className='font-bold text-4xl'>Opsie!</h1>
             <span className='font-light text-md'>
               This App Not Support on Your Device Screen

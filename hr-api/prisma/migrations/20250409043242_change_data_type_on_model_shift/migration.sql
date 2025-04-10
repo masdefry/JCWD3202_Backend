@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "shifts" ALTER COLUMN "shiftStart" SET DATA TYPE TEXT,
+ALTER COLUMN "shiftEnd" SET DATA TYPE TEXT;

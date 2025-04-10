@@ -1,25 +1,30 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
+import authRouter from './routers/auth.router';
 
 const app: Express = express();
 const port = 5001;
-app.use(express.json())
-app.use(cors({
-  origin: '*'
-}))
+app.use(express.json());
+app.use(
+  cors({
+    origin: '*',
+  })
+);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('<h1>Welcome to Express Typescript Server</h1>');
 });
 
+app.use('/api/employee', authRouter);
+
 // Centralized Error
-interface IError extends Error{
-  status: number, 
-  msg: string
+interface IError extends Error {
+  status: number;
+  msg: string;
 }
 app.use((err: IError, req: Request, res: Response, next: NextFunction) => {
-  console.log(err)
-})
+  console.log(err);
+});
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);

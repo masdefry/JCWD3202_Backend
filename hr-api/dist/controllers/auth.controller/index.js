@@ -9,60 +9,41 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPassword = exports.keepAuth = exports.authLogin = void 0;
-const auth_service_1 = require("../../services/auth.service");
-const jwt_1 = require("../../utils/jwt");
-const authLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.registerEmployee = void 0;
+const connection_1 = require("../../connection");
+const hash_password_1 = require("../../utils/hash.password");
+const registerEmployee = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { email, password } = req.body;
-        const user = yield (0, auth_service_1.authLoginService)({ email, password });
-        const token = yield (0, jwt_1.createToken)({ id: user[0].id, role: user[0].role });
-        res.status(200).json({
-            error: false,
-            message: 'Login Success',
-            data: {
-                token,
-                firstName: user[0].firstName,
-                role: user[0].role
+        const { email, password, name, phone, salary, leaveBalance = 12, shiftId, roleId } = req.body;
+        const findEmployeeByEmail = yield connection_1.prisma.employee.findFirst({
+            where: {
+                email
             }
+        });
+        if (findEmployeeByEmail !== null) {
+            throw { isExpose: true, status: 401, message: 'Email already exist' };
+        }
+        const hashedPassword = yield (0, hash_password_1.hashPassword)(password);
+        yield connection_1.prisma.employee.create({
+            data: {
+                email,
+                password: hashedPassword,
+                name,
+                phone,
+                salary,
+                leaveBalance,
+                shiftId,
+                roleId
+            }
+        });
+        res.status(201).json({
+            success: true,
+            message: `Employee ${name} registered successfully`,
+            data: null
         });
     }
     catch (error) {
         next(error);
     }
 });
-exports.authLogin = authLogin;
-const keepAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { usersId } = req.body;
-        const user = yield (0, auth_service_1.keepAuthService)({ id: usersId });
-        res.status(200).json({
-            error: false,
-            message: 'Keep Auth Success',
-            data: {
-                firstName: user.firstName,
-                role: user.role,
-            }
-        });
-    }
-    catch (error) {
-        console.log(error);
-    }
-});
-exports.keepAuth = keepAuth;
-const resetPassword = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { usersId, password } = req.body;
-        const { authorization } = req.headers;
-        yield (0, auth_service_1.resetPasswordService)({ id: usersId, password, token: authorization === null || authorization === void 0 ? void 0 : authorization.split(' ')[1] });
-        res.status(200).json({
-            error: false,
-            message: 'Reset Password Success',
-            data: {}
-        });
-    }
-    catch (error) {
-        next(error);
-    }
-});
-exports.resetPassword = resetPassword;
+exports.registerEmployee = registerEmployee;

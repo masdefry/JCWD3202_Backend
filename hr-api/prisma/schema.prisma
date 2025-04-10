@@ -1,142 +1,119 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
-model User{
-  id  String @id @default(uuid())
-  firstName String
-  lastName String 
-  email String 
-  password String 
-  leaveBalance Int @default(12)
-  role Role
+model Sample {
+  id        Int      @id @default(autoincrement())
+  name      String
+  code      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("samples") // if you want to use snake_case format
+}
+
+model Employee{
+  id String @id @default(uuid())
+  name String
+  email String
+  password String
+  phone String
   salary Int
-  tokenResetPassword String? @db.LongText
-
-  shiftsId Int
-  shifts Shift @relation(fields: [shiftsId], references: [id])
-
-  attendances Attendance[]
-  usersRequestId Leave[] @relation("usersRequestId")
-  usersApprovalId  Leave[] @relation("usersApprovalId")
-  userProfile UserProfile? 
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  leaveBalance Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   deletedAt DateTime?
 
-  @@map("users")
+  shiftId Int
+  shifts Shift @relation(fields:[shiftId], references: [id])
+  roleId Int
+  roles Role @relation(fields: [roleId], references: [id])
+
+  requestBy Leave[] @relation("requestBy")
+  accBy Leave[] @relation("accBy")
+
+  attendance Attendance[]
+
+  @@map("employees")
 }
 
-model UserProfile{
-  id Int @id @default(autoincrement())
-  birthDate DateTime @db.Date()
-  phoneNumber String @db.Char(15)
-  address String @db.Char(255)
-
-  usersId String @unique
-  users User @relation(fields: [usersId], references: [id])
-
-  userProfileImage UserProfileImage[]
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+model Role{
+  id Int @id @default(autoincrement()) 
+  title String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   deletedAt DateTime?
 
-  @@map("user_profiles")
-}
+  employees Employee[]
 
-model UserProfileImage{
-  id Int @id @default(autoincrement())
-  imageUrl String @db.LongText
-  directory String 
-
-  userProfilesId Int 
-  userProfile UserProfile @relation(fields: [userProfilesId], references: [id])
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-
-  @@map("user_profile_images")
-}
-
-enum Role{
-  HR 
-  MANAGER 
-  STAFF
+  @@map("roles")
 }
 
 model Shift{
-  id Int @id @default(autoincrement())
-  startTime DateTime @db.Time()
-  endTime DateTime @db.Time()
-
-  users User[]
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id Int @id @default(autoincrement()) 
+  shiftStart String
+  shiftEnd String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   deletedAt DateTime?
+
+  employees Employee[]
 
   @@map("shifts")
 }
 
-model Attendance{
-  id Int @id @default(autoincrement())
-  clockIn DateTime
-  clockOut DateTime?
-  deduction Int?
-
-  usersId String 
-  users User @relation(fields: [usersId], references: [id])
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-
-  @@map("attendances")
-}
-
 model Leave{
-  id Int @id @default(autoincrement())
+  id Int @id @default(autoincrement()) 
   startDate DateTime
   endDate DateTime
-  reason String
-  leaveStatus LeaveStatus @default(PENDING)
-  typeLeave LeaveType
-
-  usersRequestId String 
-  usersRequest User @relation("usersRequestId", fields: [usersRequestId], references: [id])
-  usersApprovalId String? 
-  usersApproval User? @relation("usersApprovalId", fields: [usersApprovalId], references: [id])
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  description String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   deletedAt DateTime?
+
+  employeeReqId String
+  requestBy Employee @relation("requestBy", fields: [employeeReqId], references: [id])
+
+  employeeAccId String?
+  accBy Employee? @relation("accBy", fields: [employeeAccId], references: [id])
+
+  leaveTypeId Int @unique
+  leaveTypes LeaveType @relation(fields: [leaveTypeId], references: [id])
 
   @@map("leaves")
 }
 
-enum LeaveStatus{
-  PENDING 
-  APPROVED 
-  REJECTED
+model LeaveType{
+  id Int @id @default(autoincrement()) 
+  type String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  leave Leave[]
+
+  @@map("leave_types")
 }
 
-enum LeaveType{
-  SAKIT
-  MELAHIRKAN
-  MENIKAH
-  KELUARGA_MENINGGAL 
+model Attendance{
+  id Int @id @default(autoincrement()) 
+  clockIn DateTime
+  clockOut DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  employeeId String @unique
+  employees Employee @relation(fields: [employeeId], references: [id])
+
+  @@map("attendances")
 }
