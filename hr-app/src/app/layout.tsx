@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import TanstackProvider from '@/providers/TanstackProvider';
-// import ReduxProvider from '@/providers/ReduxProvider';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AuthProvider from '@/providers/AuthProvider';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -32,18 +31,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex justify-center`}
       >
-        <TanstackProvider>
-          <ToastContainer />
-          <div className='hidden min-[320px]:block w-[500px] max-w-screen-md min-h-screen'>
+        <ToastContainer />
+        <div className='hidden min-[320px]:block w-[500px] max-w-screen-md min-h-screen'>
+          <AuthProvider>
             {children}
-          </div>
-          <div className='p-10 min-[320px]:hidden'>
-            <h1 className='font-bold text-4xl'>Opsie!</h1>
-            <span className='font-light text-md'>
-              This App Not Support on Your Device Screen
-            </span>
-          </div>
-        </TanstackProvider>
+          </AuthProvider>
+        </div>
+        <div className='p-10 min-[320px]:hidden'>
+          <h1 className='font-bold text-4xl'>Opsie!</h1>
+          <span className='font-light text-md'>
+            This App Not Support on Your Device Screen
+          </span>
+        </div>
       </body>
     </html>
   );

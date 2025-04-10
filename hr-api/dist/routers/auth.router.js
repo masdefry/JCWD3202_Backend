@@ -5,5 +5,8 @@ const authRouter = (0, express_1.Router)();
 const auth_controller_1 = require("../controllers/auth.controller");
 const auth_validator_1 = require("../middlewares/express.validator/auth.validator");
 const error_handler_1 = require("../middlewares/express.validator/error.handler");
+const jwt_decode_1 = require("../middlewares/jwt.decode");
 authRouter.post('/register', auth_validator_1.registerEmployeeValidator, error_handler_1.errorValidatorHandler, auth_controller_1.registerEmployee);
+authRouter.post('/login', auth_controller_1.loginEmployee);
+authRouter.get('/session-login', jwt_decode_1.jwtDecode, auth_controller_1.sessionLoginEmployee);
 exports.default = authRouter;

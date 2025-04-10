@@ -3,13 +3,16 @@ import { IoReceipt } from 'react-icons/io5';
 import { HiClipboardList } from 'react-icons/hi';
 import { IoIosTime } from 'react-icons/io';
 import Link from 'next/link';
+import authStore from '@/zustand/store';
 
 export default function DashboardPage() {
+  const email = authStore((state: any) => state.email);
+
   return (
     <main>
       <section className='py-5'>
         <h1 className='text-4xl font-bold'>Selamat Pagi</h1>
-        <h1 className='text-4xl'>User-01</h1>
+        <h1 className='text-4xl'>{email}</h1>
         <h1 className='text-md font-thin py-5'>
           Jangan lupa presensi hari ini.
         </h1>

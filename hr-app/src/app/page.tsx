@@ -1,16 +1,46 @@
 'use client';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { authSchema } from '@/features/auth/schemas/authSchema';
+import { authValidationSchema } from '@/features/auth/schemas/authValidationSchema';
 import instance from '@/utils/axiosInstance';
-import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-
-import authStore from './../zustand/authStore';
-
+import { AxiosResponse } from 'axios';
 import { useRouter } from 'next/navigation';
+import authStore from '@/zustand/store';
+
+interface IHandleAuthLoginProps {
+  email: string;
+  password: string;
+}
 
 export default function HomePage() {
   const router = useRouter();
+  const setAuth = authStore((state: any) => state.setAuth);
+
+  const handleAuthLogin = async ({
+    email,
+    password,
+  }: IHandleAuthLoginProps) => {
+    try {
+      const response: AxiosResponse<any, any> = await instance.post(
+        '/employee/login',
+        {
+          email,
+          password,
+        }
+      );
+
+      toast.success(response.data.message);
+      setAuth({
+        _token: response.data.data.token,
+        _email: response.data.data.email,
+        _role: response.data.data.role,
+      });
+      router.push('/dashboard');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <main>
       <section className='p-10'>
@@ -18,7 +48,16 @@ export default function HomePage() {
         <h1 className='text-md font-light'>
           Masukan email dan password untuk masuk
         </h1>
-        <Formik>
+        <Formik
+          initialValues={{ email: '', password: '' }}
+          validationSchema={authValidationSchema}
+          onSubmit={(values) => {
+            handleAuthLogin({
+              email: values.email,
+              password: values.password,
+            });
+          }}
+        >
           <Form className='w-full py-10 flex flex-col gap-5'>
             <label className='form-control w-full'>
               <div className='label'>
