@@ -8,9 +8,9 @@ import { useRouter, usePathname } from 'next/navigation';
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const token = authStore((state: any) => state.token);
   const setAuth = authStore((state: any) => state.setAuth);
-  const router = useRouter()
-  const pathName = usePathname()
-  const [isAuthValid, setIsAuthValid] = useState(false);
+  const router = useRouter();
+  const pathName = usePathname();
+  const [isHandleSessionLoginDone, setIsHandleSessionLoginDone] = useState(false);
 
   const handleSessionLogin = async () => {
     try {
@@ -19,25 +19,40 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
           Authorization: `Bearer ${token}`,
         },
       });
-      setAuth({_token: response.data.data.token, _email: response.data.data.email, _role: response.data.data.role});  
-      setIsAuthValid(true);
+      setAuth({
+        _token: response.data.data.token,
+        _email: response.data.data.email,
+        _role: response.data.data.role,
+      });
+      setIsHandleSessionLoginDone(true);
     } catch (error) {
-      setIsAuthValid
-      console.log(error);
+      setAuth({
+        _token: null,
+        _email: null,
+        _role: null,
+      });
+      setIsHandleSessionLoginDone(true);
     }
   };
 
-  // Dijalankan Pertama Kali
+  /*
+    This useEffect executed 2 times, 
+    once when the component mounts and once when the token changes.
+  */
   useEffect(() => {
-    if(token){
+    if (token) {
       handleSessionLogin();
+    }else{
+      setIsHandleSessionLoginDone(true)
     }
   }, [token]);
 
   useEffect(() => {
-    if(!isAuthValid && pathName !== '/') return router.push('/')
-    if(isAuthValid && pathName === '/') return router.push('/dashboard')
-  }, [isAuthValid, pathName])
+    if(isHandleSessionLoginDone) {
+      if (token && pathName === '/') return router.push('/dashboard');
+      if (!token && pathName !== '/') return router.push('/');
+    }
+  }, [isHandleSessionLoginDone, pathName]);
 
   return <>{children}</>;
 }
