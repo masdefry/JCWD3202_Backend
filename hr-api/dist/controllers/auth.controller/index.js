@@ -8,12 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sessionLoginEmployee = exports.loginEmployee = exports.registerEmployee = void 0;
 const connection_1 = require("../../connection");
 const hash_password_1 = require("../../utils/hash.password");
 const compare_password_1 = require("../../utils/compare.password");
 const jwt_sign_1 = require("../../utils/jwt.sign");
+const transporter_mailer_1 = require("../../utils/transporter.mailer");
+const fs_1 = __importDefault(require("fs"));
+const handlebars_1 = require("handlebars");
 const registerEmployee = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password, name, phone, salary, leaveBalance = 12, shiftId, roleId, } = req.body;
@@ -37,6 +43,14 @@ const registerEmployee = (req, res, next) => __awaiter(void 0, void 0, void 0, f
                 shiftId,
                 roleId,
             },
+        });
+        const verifyTemplateEmail = fs_1.default.readFileSync('./src/public/verify-template-email.html', 'utf-8');
+        let verifyTemplateEmailCompiled = (0, handlebars_1.compile)(verifyTemplateEmail);
+        verifyTemplateEmailCompiled = verifyTemplateEmailCompiled({ name: name });
+        yield transporter_mailer_1.transporter.sendMail({
+            to: email,
+            subject: 'Welcome to HR System',
+            html: verifyTemplateEmailCompiled,
         });
         res.status(201).json({
             success: true,

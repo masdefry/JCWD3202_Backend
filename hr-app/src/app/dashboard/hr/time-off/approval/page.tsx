@@ -1,6 +1,5 @@
 'use client';
 import HeaderTitle from '@/components/HeaderTitle'
-import TimeOffDetailModal from '@/features/hr/time-off/components/TimeOffDetailModal';
 
 export default function TimeOffApprovalPage(){
     return(
@@ -16,7 +15,7 @@ export default function TimeOffApprovalPage(){
                         <h1 className='mt-3 text-sm md:text-lg'>08 Oct 2024</h1>
                     </div>
                     <div className='w-full md:w-fit'>
-                        <TimeOffDetailModal />
+                        {/* <TimeOffDetailModal /> */}
                     </div>
                 </div>
             </section>

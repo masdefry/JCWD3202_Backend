@@ -1,32 +1,22 @@
 'use client';
-import HeaderTitle from '@/components/HeaderTitle'
-import DisplayProfile from '@/features/profile/components/DisplayProfile';
+import HeaderTitle from '@/components/HeaderTitle';
 import FormProfile from '@/features/profile/components/FormProfile';
+import authStore from '@/zustand/store';
 
-import {queryGetProfileHook} from '@/features/profile/hooks/queryGetProfileHook';
-import { mutateCreateProfileHook } from '@/features/profile/hooks/mutateCreateProfileHook';
+export default function ProfilePage() {
+  const setAuth = authStore((state) => state.setAuth);
 
-export default function ProfilePage(){
+  const handleSignOut = () => {
+    setAuth({ _token: null, email: null, role: null})
+  }
 
-    const {dataUserProfile} = queryGetProfileHook()
-    const {mutateCreateProfile} = mutateCreateProfileHook()
-
-    return(
-        <main>
-            <HeaderTitle title='Account Profile' />
-            {
-                dataUserProfile?.birthDate && dataUserProfile?.phoneNumber && dataUserProfile?.address?
-                    <DisplayProfile
-                        birthDate={dataUserProfile?.birthDate}
-                        phoneNumber={dataUserProfile?.phoneNumber}
-                        address={dataUserProfile?.address}
-                        imagesProfile={dataUserProfile?.userProfileImage}
-                    />
-                :
-                    <FormProfile
-                        mutateCreateProfile={mutateCreateProfile}
-                    />
-            }
-        </main>
-    )
+  return (
+    <main>
+      <HeaderTitle title='User Account' />
+      <section className='mt-5 mb-5'>
+        <FormProfile />
+        <button onClick={handleSignOut} className='btn bg-gray-300 w-full my-5'>Sign Out</button>
+      </section>
+    </main>
+  );
 }

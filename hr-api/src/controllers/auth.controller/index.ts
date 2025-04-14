@@ -3,6 +3,9 @@ import { prisma } from '../../connection';
 import { hashPassword } from '../../utils/hash.password';
 import { comparePassword } from '../../utils/compare.password';
 import { jwtSign } from '../../utils/jwt.sign';
+import { transporter } from '../../utils/transporter.mailer';
+import fs from 'fs';
+import { compile } from 'handlebars';
 
 export const registerEmployee = async (
   req: Request,
@@ -44,6 +47,20 @@ export const registerEmployee = async (
         shiftId,
         roleId,
       },
+    });
+
+    const verifyTemplateEmail = fs.readFileSync(
+      './src/public/verify-template-email.html',
+      'utf-8'
+    );
+
+    let verifyTemplateEmailCompiled: any = compile(verifyTemplateEmail);
+    verifyTemplateEmailCompiled = verifyTemplateEmailCompiled({ name: name });
+
+    await transporter.sendMail({
+      to: email,
+      subject: 'Welcome to HR System',
+      html: verifyTemplateEmailCompiled,
     });
 
     res.status(201).json({
@@ -110,7 +127,7 @@ export const sessionLoginEmployee = async (
 ) => {
   try {
     const { payload } = req.body;
-    
+
     const findEmployeeByUserId = await prisma.employee.findFirst({
       where: { id: payload.userId },
       include: {
