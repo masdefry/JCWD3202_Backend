@@ -44,8 +44,8 @@ export const registerEmployee = async (
         phone,
         salary,
         leaveBalance,
-        shiftId,
-        roleId,
+        shiftId: parseInt(shiftId),
+        roleId: parseInt(roleId),
       },
     });
 

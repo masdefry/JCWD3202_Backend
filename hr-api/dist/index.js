@@ -17,6 +17,7 @@ app.get('/', (req, res) => {
 });
 app.use('/api/employee', auth_router_1.default);
 app.use((err, req, res, next) => {
+    console.log(err);
     res.status(err.status || 500).json({
         success: false,
         message: err.isExpose ? err.message : err.message === 'jwt expired' ? 'Session login is expired' : 'Internal server error',

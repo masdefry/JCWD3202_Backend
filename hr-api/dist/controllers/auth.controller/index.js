@@ -40,8 +40,8 @@ const registerEmployee = (req, res, next) => __awaiter(void 0, void 0, void 0, f
                 phone,
                 salary,
                 leaveBalance,
-                shiftId,
-                roleId,
+                shiftId: parseInt(shiftId),
+                roleId: parseInt(roleId),
             },
         });
         const verifyTemplateEmail = fs_1.default.readFileSync('./src/public/verify-template-email.html', 'utf-8');

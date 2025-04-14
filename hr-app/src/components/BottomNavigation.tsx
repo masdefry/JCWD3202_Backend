@@ -14,7 +14,7 @@ export default function BottomNavigation() {
                     Home
                 </div>
             </Link>
-            <Link href='/dashboard/hr/register-employee'>
+            <Link href='/dashboard/register-employee'>
                 <div className='flex flex-col items-center'>
                     <BsPeople className='text-xl' />
                     Employee

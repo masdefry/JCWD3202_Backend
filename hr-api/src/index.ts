@@ -24,6 +24,7 @@ interface IError extends Error {
   message: string;
 }
 app.use((err: IError, req: Request, res: Response, next: NextFunction) => {
+  console.log(err)
   res.status(err.status || 500).json({
     success: false, 
     message: err.isExpose? err.message : err.message === 'jwt expired'? 'Session login is expired' : 'Internal server error',

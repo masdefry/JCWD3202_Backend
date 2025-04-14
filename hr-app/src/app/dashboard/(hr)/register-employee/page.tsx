@@ -1,40 +1,99 @@
 'use client';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import HeaderTitle from '@/components/HeaderTitle';
+import { registerEmployeeSchema } from '@/features/register-employee/schemas/registerEmployeeSchema';
+import instance from '@/utils/axiosInstance';
+import { toast } from 'react-toastify';
+import authStore from '@/zustand/store';
 
 export default function RegisterEmployee() {
+  const token = authStore((state) => state.token);  
+
+  const handleRegisterEmployee = async({
+    email, 
+    password, 
+    name, 
+    phone, 
+    salary, 
+    shiftId, 
+    roleId
+  }: any) => {
+    try {
+      await instance.post('/employee/register', {
+        email, 
+        password, 
+        name, 
+        phone, 
+        salary, 
+        shiftId, 
+        roleId
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      toast.success('Employee created successfully')
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <main>
+      <HeaderTitle title='Register Employee' />
       <section className='p-10'>
-        <Formik initialValues={{}}>
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+            name: '',
+            phone: '',
+            salary: null,
+            shiftId: null,
+            roleId: null,
+          }}
+          validationSchema={registerEmployeeSchema}
+          onSubmit={(values) => {
+            handleRegisterEmployee({
+              email: values.email,
+              password: values.password,
+              name: values.name,
+              phone: values.phone,
+              salary: values.salary,
+              shiftId: values.shiftId,
+              roleId: values.roleId 
+            })
+          }}
+        >
           <Form className='w-full flex flex-col gap-5 overflow-y-auto h-screen'>
             <label className='form-control w-full'>
               <div className='label'>
-                <span className='label-text-alt'>Firstname</span>
+                <span className='label-text-alt'>Name</span>
               </div>
               <Field
-                name='firstName'
+                name='name'
                 type='text'
                 className='input input-bordered w-full'
-                placeholder='Ex. John'
+                placeholder='Ex. John Doe'
               />
               <ErrorMessage
-                name='firstName'
+                name='name'
                 component={'div'}
                 className='text-red-500 text-sm'
               />
             </label>
             <label className='form-control w-full'>
               <div className='label'>
-                <span className='label-text-alt'>Lastname</span>
+                <span className='label-text-alt'>Phone Number</span>
               </div>
               <Field
-                name='lastName'
+                name='phone'
                 type='text'
                 className='input input-bordered w-full'
-                placeholder='Ex. Doe'
+                placeholder='Ex. 081234567890'
               />
               <ErrorMessage
-                name='lastName'
+                name='phone'
                 component={'div'}
                 className='text-red-500 text-sm'
               />
@@ -57,11 +116,27 @@ export default function RegisterEmployee() {
             </label>
             <label className='form-control w-full'>
               <div className='label'>
+                <span className='label-text-alt'>Password</span>
+              </div>
+              <Field
+                name='password'
+                type='password'
+                className='input input-bordered w-full'
+                placeholder='Ex. ******'
+              />
+              <ErrorMessage
+                name='password'
+                component={'div'}
+                className='text-red-500 text-sm'
+              />
+            </label>
+            <label className='form-control w-full'>
+              <div className='label'>
                 <span className='label-text-alt'>Salary</span>
               </div>
               <Field
                 name='salary'
-                type='text'
+                type='number'
                 className='input input-bordered w-full'
                 placeholder='Ex. 15000000'
               />
@@ -77,7 +152,7 @@ export default function RegisterEmployee() {
               </div>
               <Field
                 as='Select'
-                name='role'
+                name='roleId'
                 className='select select-bordered w-full'
               >
                 <option
@@ -86,12 +161,12 @@ export default function RegisterEmployee() {
                 >
                   Select Employee Role
                 </option>
-                <option value='HR'>HR</option>
-                <option value='MANAGER'>MANAGER</option>
-                <option value='STAFF'>STAFF</option>
+                <option value={1}>HR</option>
+                <option value={2}>MANAGER</option>
+                <option value={3}>STAFF</option>
               </Field>
               <ErrorMessage
-                name='role'
+                name='roleId'
                 component={'div'}
                 className='text-red-500 text-sm'
               />
@@ -102,7 +177,7 @@ export default function RegisterEmployee() {
               </div>
               <Field
                 as='Select'
-                name='shiftsId'
+                name='shiftId'
                 className='select select-bordered w-full'
               >
                 <option
@@ -115,7 +190,7 @@ export default function RegisterEmployee() {
                 <option value={2}>13:00 - 22:00</option>
               </Field>
               <ErrorMessage
-                name='shiftsId'
+                name='shiftId'
                 component={'div'}
                 className='text-red-500 text-sm'
               />

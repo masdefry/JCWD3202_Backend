@@ -7,12 +7,14 @@ import authStore from '@/zustand/store';
 
 export default function DashboardPage() {
   const email = authStore((state: any) => state.email);
+  const role = authStore((state: any) => state.role);
 
   return (
     <main>
       <section className='py-5'>
         <h1 className='text-4xl font-bold'>Selamat Pagi</h1>
         <h1 className='text-4xl'>{email}</h1>
+        <p className='bg-red-500 text-white p-2 rounded-md w-fit'>{role}</p>
         <h1 className='text-md font-thin py-5'>
           Jangan lupa presensi hari ini.
         </h1>

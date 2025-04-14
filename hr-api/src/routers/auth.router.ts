@@ -8,9 +8,12 @@ import {
 import { registerEmployeeValidator } from '../middlewares/express.validator/auth.validator';
 import { errorValidatorHandler } from '../middlewares/express.validator/error.handler';
 import { jwtDecode } from '../middlewares/jwt.decode';
+import { hrOnly } from '../middlewares/auth.guard/hrOnly';
 
 authRouter.post(
   '/register',
+  jwtDecode, 
+  hrOnly, 
   registerEmployeeValidator,
   errorValidatorHandler,
   registerEmployee
