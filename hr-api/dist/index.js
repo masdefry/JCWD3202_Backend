@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const auth_router_1 = __importDefault(require("./routers/auth.router"));
+const attendances_router_1 = __importDefault(require("./routers/attendances.router"));
 const app = (0, express_1.default)();
 const port = 5001;
 app.use(express_1.default.json());
@@ -16,6 +17,7 @@ app.get('/', (req, res) => {
     res.send('<h1>Welcome to Express Typescript Server</h1>');
 });
 app.use('/api/employee', auth_router_1.default);
+app.use('/api/attendances', attendances_router_1.default);
 app.use((err, req, res, next) => {
     console.log(err);
     res.status(err.status || 500).json({

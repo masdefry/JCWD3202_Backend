@@ -3,11 +3,10 @@ import { IoReceipt } from 'react-icons/io5';
 import { HiClipboardList } from 'react-icons/hi';
 import { IoIosTime } from 'react-icons/io';
 import Link from 'next/link';
-import authStore from '@/zustand/store';
+import useDisplayDashboard from '@/features/dashboard/hooks/useDisplayDashboard';
 
 export default function DashboardPage() {
-  const email = authStore((state: any) => state.email);
-  const role = authStore((state: any) => state.role);
+ const { email, role, token, handlePostClockInAttendance } = useDisplayDashboard()
 
   return (
     <main>
@@ -23,7 +22,7 @@ export default function DashboardPage() {
         <h1 className='text-md font-thin'>Shift-01</h1>
         <h1 className='text-xl font-bold'>09:00 - 18:00</h1>
         <div className='flex gap-5'>
-          <button className='btn bg-white flex-1'>Clock-In</button>
+          <button onClick={() => handlePostClockInAttendance(token)} className='btn bg-white flex-1'>Clock-In</button>
           <button className='btn bg-white flex-1'>Clock-Out</button>
         </div>
       </section>

@@ -1,6 +1,7 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import authRouter from './routers/auth.router';
+import attendancesRouter from './routers/attendances.router';
 
 const app: Express = express();
 const port = 5001;
@@ -16,6 +17,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/api/employee', authRouter);
+app.use('/api/attendances', attendancesRouter);
 
 // Centralized Error
 interface IError extends Error {
