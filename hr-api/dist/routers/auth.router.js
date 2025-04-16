@@ -10,4 +10,5 @@ const hrOnly_1 = require("../middlewares/auth.guard/hrOnly");
 authRouter.post('/register', jwt_decode_1.jwtDecode, hrOnly_1.hrOnly, auth_validator_1.registerEmployeeValidator, error_handler_1.errorValidatorHandler, auth_controller_1.registerEmployee);
 authRouter.post('/login', auth_controller_1.loginEmployee);
 authRouter.get('/session-login', jwt_decode_1.jwtDecode, auth_controller_1.sessionLoginEmployee);
+authRouter.post('/verify-email', jwt_decode_1.jwtDecode, auth_controller_1.verifyEmailEmployee);
 exports.default = authRouter;

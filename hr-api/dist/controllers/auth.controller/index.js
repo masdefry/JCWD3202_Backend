@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sessionLoginEmployee = exports.loginEmployee = exports.registerEmployee = void 0;
+exports.verifyEmailEmployee = exports.sessionLoginEmployee = exports.loginEmployee = exports.registerEmployee = void 0;
 const connection_1 = require("../../connection");
 const hash_password_1 = require("../../utils/hash.password");
 const compare_password_1 = require("../../utils/compare.password");
@@ -32,7 +32,7 @@ const registerEmployee = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             throw { isExpose: true, status: 401, message: 'Email already exist' };
         }
         const hashedPassword = yield (0, hash_password_1.hashPassword)(password);
-        yield connection_1.prisma.employee.create({
+        const createdEmployee = yield connection_1.prisma.employee.create({
             data: {
                 email,
                 password: hashedPassword,
@@ -45,8 +45,14 @@ const registerEmployee = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             },
         });
         const verifyTemplateEmail = fs_1.default.readFileSync('./src/public/verify-template-email.html', 'utf-8');
+        const token = (0, jwt_sign_1.jwtSign)({
+            userId: createdEmployee.id,
+        });
         let verifyTemplateEmailCompiled = (0, handlebars_1.compile)(verifyTemplateEmail);
-        verifyTemplateEmailCompiled = verifyTemplateEmailCompiled({ name: name });
+        verifyTemplateEmailCompiled = verifyTemplateEmailCompiled({
+            name: name,
+            url: `${process.env.LINK_VERIFY_EMAIL}/verification/${token}`,
+        });
         yield transporter_mailer_1.transporter.sendMail({
             to: email,
             subject: 'Welcome to HR System',
@@ -74,6 +80,13 @@ const loginEmployee = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         });
         if (findEmployeeByEmail === null) {
             throw { isExpose: true, status: 401, message: 'Email not found' };
+        }
+        if (findEmployeeByEmail.isVerified === false) {
+            throw {
+                isExpose: true,
+                status: 401,
+                message: 'Please verify your email first',
+            };
         }
         const isPasswordMatch = yield (0, compare_password_1.comparePassword)(findEmployeeByEmail === null || findEmployeeByEmail === void 0 ? void 0 : findEmployeeByEmail.password, password);
         if (isPasswordMatch === false) {
@@ -123,3 +136,33 @@ const sessionLoginEmployee = (req, res, next) => __awaiter(void 0, void 0, void 
     }
 });
 exports.sessionLoginEmployee = sessionLoginEmployee;
+const verifyEmailEmployee = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.body.payload;
+        const findEmployeeByUserId = yield connection_1.prisma.employee.findFirst({
+            where: {
+                id: userId
+            }
+        });
+        if (findEmployeeByUserId === null) {
+            throw { isExpose: true, status: 401, message: 'User not found' };
+        }
+        yield connection_1.prisma.employee.update({
+            data: {
+                isVerified: true
+            },
+            where: {
+                id: userId
+            }
+        });
+        res.status(200).json({
+            success: true,
+            message: 'Email verified successfully',
+            data: null
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.verifyEmailEmployee = verifyEmailEmployee;

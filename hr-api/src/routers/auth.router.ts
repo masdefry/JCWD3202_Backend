@@ -4,6 +4,7 @@ import {
   registerEmployee,
   loginEmployee,
   sessionLoginEmployee,
+  verifyEmailEmployee,
 } from '../controllers/auth.controller';
 import { registerEmployeeValidator } from '../middlewares/express.validator/auth.validator';
 import { errorValidatorHandler } from '../middlewares/express.validator/error.handler';
@@ -12,13 +13,14 @@ import { hrOnly } from '../middlewares/auth.guard/hrOnly';
 
 authRouter.post(
   '/register',
-  jwtDecode, 
-  hrOnly, 
+  jwtDecode,
+  hrOnly,
   registerEmployeeValidator,
   errorValidatorHandler,
   registerEmployee
 );
 authRouter.post('/login', loginEmployee);
 authRouter.get('/session-login', jwtDecode, sessionLoginEmployee);
+authRouter.post('/verify-email', jwtDecode, verifyEmailEmployee);
 
 export default authRouter;

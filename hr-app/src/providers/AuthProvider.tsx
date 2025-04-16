@@ -10,7 +10,8 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const setAuth = authStore((state: any) => state.setAuth);
   const router = useRouter();
   const pathName = usePathname();
-  const [isHandleSessionLoginDone, setIsHandleSessionLoginDone] = useState(false);
+  const [isHandleSessionLoginDone, setIsHandleSessionLoginDone] =
+    useState(false);
 
   const handleSessionLogin = async () => {
     try {
@@ -42,15 +43,19 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (token) {
       handleSessionLogin();
-    }else{
-      setIsHandleSessionLoginDone(true)
+    } else {
+      setIsHandleSessionLoginDone(true);
     }
   }, [token]);
 
   useEffect(() => {
-    if(isHandleSessionLoginDone) {
+    if (isHandleSessionLoginDone) {
       if (token && pathName === '/') return router.push('/dashboard');
-      if (!token && pathName !== '/') return router.push('/');
+      if (!token) {
+        if (pathName !== '/' && pathName.split('/')[1] !== 'verification') {
+          router.push('/');
+        }
+      }
     }
   }, [isHandleSessionLoginDone, pathName]);
 

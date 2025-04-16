@@ -36,8 +36,8 @@ export default function HomePage() {
         _role: response.data.data.role,
       });
       router.push('/dashboard');
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast.error(error.response.data.message);
     }
   };
 
