@@ -285,3 +285,10 @@ a. Mocking is a step in the optimization process of Express JS to improve server
 x. Mocking is a technique to replace external components with fake implementations to isolate the unit being tested
 c. Mocking is the process of creating a replica of an Express JS server to replace the original server during unit testing.
 d. Mocking is the process of creating identical data copies for testing purposes.
+
+
+
+
+
+24. How does Docker manage volumes and what are their benefits in the context of data persistence?
+x. Docker uses volumes to provide persistent storage outside of the container. The benefit is to maintain and share data among containers.
