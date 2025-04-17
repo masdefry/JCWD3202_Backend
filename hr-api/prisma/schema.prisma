@@ -59,7 +59,7 @@ model EmployeeProfile{
   updatedAt DateTime @updatedAt
   deletedAt DateTime?
 
-  employeeId  String 
+  employeeId  String @unique
   employee Employee @relation(fields: [employeeId], references: [id])
 
   @@map("employee_profiles") 

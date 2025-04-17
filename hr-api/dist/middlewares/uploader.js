@@ -20,7 +20,6 @@ const uploader = (fileAccepted) => {
         },
     });
     const fileFilter = (req, file, cb) => {
-        console.log(fileAccepted);
         if (!fileAccepted.includes(file.mimetype))
             return cb(new Error('File format not accepted'));
         cb(null, true);

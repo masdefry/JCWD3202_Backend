@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createEmployeeProfile } from '../controllers/employee.controller';
+import { createEmployeeProfile, findEmployeeProfile } from '../controllers/employee.controller';
 import { uploader } from '../middlewares/uploader';
 import { jwtDecode } from '../middlewares/jwt.decode';
 
@@ -13,5 +13,7 @@ employeeRouter.post(
   jwtDecode,
   createEmployeeProfile
 );
+
+employeeRouter.get('/', jwtDecode, findEmployeeProfile)
 
 export default employeeRouter;

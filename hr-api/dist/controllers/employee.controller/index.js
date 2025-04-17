@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createEmployeeProfile = void 0;
+exports.findEmployeeProfile = exports.createEmployeeProfile = void 0;
 const connection_1 = require("../../connection");
 const createEmployeeProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
@@ -36,3 +36,22 @@ const createEmployeeProfile = (req, res, next) => __awaiter(void 0, void 0, void
     }
 });
 exports.createEmployeeProfile = createEmployeeProfile;
+const findEmployeeProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.body.payload;
+        const findEmployeeProfileByEmployeeId = yield connection_1.prisma.employeeProfile.findFirst({
+            where: {
+                employeeId: userId
+            }
+        });
+        res.status(200).json({
+            success: true,
+            message: 'Get Employee Profile Successful',
+            data: findEmployeeProfileByEmployeeId
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.findEmployeeProfile = findEmployeeProfile;

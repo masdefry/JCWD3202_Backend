@@ -1,0 +1,179 @@
+1. What is the role of npm in Node JS application development?
+a. Handling HTTP Response
+b. Handling HTTP Request
+x. Managing Dependencies and Packages
+d. A & B are Correct
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2. 2. How do you create a GET route endpoint in Express JS following proper REST conventions? 
+(ex: for fetching a collection of products).
+a. app.post('/products, handler)
+b. app.get('/product, handler)
+c. app.get('/get-product', handler)
+x. app.get('/products', handler)
+
+
+
+
+
+3. What is the difference between PUT and POST in the context of REST API?
+a. PUT is used to create new data, while POST is used to update data
+x. PUT is used to update data, while POST is used to create new data
+c. PUT and POST can both be used to create new data
+d. PUT and POST can both be used to update data
+
+
+
+
+
+4. How do you configure middleware in Express JS? assuming app is the variable declared for express.
+x. app.use(middlewareFunction)
+b. middlewareFunction.configure(app)
+c. middlewareFunction.use(app)
+d. app.configure(middlewareFunction)
+
+
+
+
+5. What is middleware in Express JS and how can you implement it to validate 
+input data before saving it to the database?
+a. Middleware is used only to connect Express JS application with the database server.
+b. Middleware can only be used for user session management.
+x. Middleware is a function that can modify the request or response object.
+d. Middleware is the standard method for managing routes in Express JS.
+
+
+
+
+
+6. The following is not for handling user authentication in REST API developemnt:
+a. Basic Authentication
+b. JWT (Json Web Token)
+x. OAuth 4.0
+d. All Answer are Correct
+
+
+
+
+
+7. The following is not used for implementing automated testing for REST API built with Node JS
+x. Unit testing with CMS and Chai
+b. Integration test with Supertest
+c. Unit testing with Mocha and Chai
+d. All answer are correct
+
+
+
+
+
+8. How can you optimize the performance of a node js application handling high HTTP traffic?
+a. Increase the use of synchronous programming to ensure data consistency, 
+and use monitoring tools to detect bottlenecks.
+b. Avoid using clustering as it can cause unnecessary overhead and focus on optimizing the source code.
+c. Use serverless computing techniques to manage high traffic loads and ensure application availability.
+x. Use caching for frequently used query results and consider using a reverse proxy. (REDIS)
+
+
+
+
+
+9. Explain the concept of JWT (JSON Web Token) and how it is used in authentication and authorization 
+in node js application
+a. JWT can only be used for authentication, and cannot be used for authorization. 
+Its usage involves exchanging tokens between the server and the client.
+b. JWT is and authorization protocol used to verify user identity. 
+Its usage involves exchanging tokens between the server and the user.
+c. JWT is an authentication mechanism that provides authentication workflow within the server. 
+Its usage involves storing tokens in cookies on both the server and the user client.
+x. JWT is a structured token format that can be used to transmit user information. 
+Its usage involves creating tokens and verifying them on each request.
+
+
+
+
+
+10. Explain the difference between authentication and authorization in the context of creating REST API
+a. Authentication and authorization are concepts used to store data in cache on the server.
+b. Authentication and authorization are terms that can be used interchangeable because they 
+have similar meanings.
+x. Authentication is the process of verifying a user identity, while authorization is the process 
+of granting access rights based on that verified identity.
+d. Authentication is the process of granting access rights to a user, while authorization 
+is the process of verifying the user's identity
+
+
+
+
+
+11. How to create a new table with the condition of two columns where the first column is used to 
+store numbers and the second column is used to store a name in MySQL?
+a. CREATE new_table (column1 INT, column2 VARCHAR(255));
+b. CREATE new_table ADD COLUMN (column1 VARCHAR(255), column2 INT);
+c. CREATE TABLE new_table (column1 VARCHAR(255), column2 INT);
+x. CREATE TABLE new_table (column1 INT, column2 VARCHAR(255));
+
+
+
+
+
+12. What is meant by a Foreign Key (FK) in SQL and how do you use it?
+a. Foreign Key is used to identify unique records in a table.
+x. Foreign Key is used to link two tables together based on a specific column.
+c. Foreign Key is used to provide default values for certain columns.
+d. Foreign Key is used to sort data in a table based on a specific column.
+
+
+
+
+
+13. How do you delete all data from a table in MySQL without deleting the table structure itself?
+a. DROP table_name;
+b. CLEAR * FROM table_name;
+c. REMOVE FROM table_name;
+x. TRUNCATE table_name;
+
+
+
+
+
+14. Explain the concept of normalization in the database design and why it is important?
+a. Normalization is the process of grouping data in a database based on its data type. 
+It is important to ensure efficient data storage.
+b. Normalization is the process of converting data into a simpler form. 
+It is important to facilitate data readability in the database.
+c. Normalization is not important in database design because it can increase the complexity of SQL queries.
+x. Normalization is the process of reducing redundancy and data dependencies in a database. 
+It is important to ensure consistent data and reduce the risk of anomalies.
+
+
+
+
+
+15. What is a nested subquery and how can you use it in SQL?
+a. A nested subquery is a type of stored procedure that can be called from within a function.
+b. A nested subquery is a database trigger that automatically executes based on certain conditions.
+x. A nested subquery is a query within another query, used to provide intermediate results for the outer query.
+d. A nested subquery is a type of join operation that merges results from two tables.
+
+
+
+
+

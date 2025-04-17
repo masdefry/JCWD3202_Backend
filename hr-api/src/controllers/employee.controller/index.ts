@@ -29,3 +29,23 @@ export const createEmployeeProfile = async (
     next(error);
   }
 };
+
+export const findEmployeeProfile = async(req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { userId } = req.body.payload
+
+    const findEmployeeProfileByEmployeeId = await prisma.employeeProfile.findFirst({
+      where: {
+        employeeId: userId
+      }
+    })
+
+    res.status(200).json({
+      success: true, 
+      message: 'Get Employee Profile Successful', 
+      data: findEmployeeProfileByEmployeeId
+    })
+  } catch (error) {
+    next(error)
+  }
+}
