@@ -2,6 +2,7 @@ import express, { Express, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import authRouter from './routers/auth.router';
 import attendancesRouter from './routers/attendances.router';
+import employeeRouter from './routers/employee.router';
 
 const app: Express = express();
 const port = 5001;
@@ -18,6 +19,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/api/employee', authRouter);
 app.use('/api/attendances', attendancesRouter);
+app.use('/api/employee-profile', employeeRouter);
 
 // Centralized Error
 interface IError extends Error {
@@ -26,12 +28,16 @@ interface IError extends Error {
   message: string;
 }
 app.use((err: IError, req: Request, res: Response, next: NextFunction) => {
-  console.log(err)
+  console.log(err);
   res.status(err.status || 500).json({
-    success: false, 
-    message: err.isExpose? err.message : err.message === 'jwt expired'? 'Session login is expired' : 'Internal server error',
-    data: null
-  })
+    success: false,
+    message: err.isExpose
+      ? err.message
+      : err.message === 'jwt expired'
+      ? 'Session login is expired'
+      : 'Internal server error',
+    data: null,
+  });
 });
 
 app.listen(port, () => {

@@ -44,7 +44,25 @@ model Employee{
 
   attendance Attendance[]
 
+  employeeProfile EmployeeProfile[]
+
   @@map("employees")
+}
+
+model EmployeeProfile{
+  id  Int @id @default(autoincrement())
+  birthDate String?
+  address String? 
+  imageProfile String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  employeeId  String 
+  employee Employee @relation(fields: [employeeId], references: [id])
+
+  @@map("employee_profiles") 
 }
 
 model Role{

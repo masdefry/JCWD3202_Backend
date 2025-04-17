@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const auth_router_1 = __importDefault(require("./routers/auth.router"));
 const attendances_router_1 = __importDefault(require("./routers/attendances.router"));
+const employee_router_1 = __importDefault(require("./routers/employee.router"));
 const app = (0, express_1.default)();
 const port = 5001;
 app.use(express_1.default.json());
@@ -18,12 +19,17 @@ app.get('/', (req, res) => {
 });
 app.use('/api/employee', auth_router_1.default);
 app.use('/api/attendances', attendances_router_1.default);
+app.use('/api/employee-profile', employee_router_1.default);
 app.use((err, req, res, next) => {
     console.log(err);
     res.status(err.status || 500).json({
         success: false,
-        message: err.isExpose ? err.message : err.message === 'jwt expired' ? 'Session login is expired' : 'Internal server error',
-        data: null
+        message: err.isExpose
+            ? err.message
+            : err.message === 'jwt expired'
+                ? 'Session login is expired'
+                : 'Internal server error',
+        data: null,
     });
 });
 app.listen(port, () => {
