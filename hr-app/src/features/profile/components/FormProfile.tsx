@@ -1,10 +1,8 @@
 import {Formik, Form, Field, ErrorMessage} from 'formik'; 
 import { createProfileValidationSchema } from './schemas/createProfileValidationSchema';
 import instance from '@/utils/axiosInstance';
-import authStore from '@/zustand/store';
 
-export default function FormProfile(){
-    const token = authStore((state: any) => state.token)
+export default function FormProfile({token}: {token: string}){
 
     const handleCreateProfile = async (formData: FormData) => {
         try {

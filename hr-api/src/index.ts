@@ -17,6 +17,7 @@ app.get('/', (req: Request, res: Response) => {
   res.send('<h1>Welcome to Express Typescript Server</h1>');
 });
 
+app.use('*/images', express.static('src/public/images'))
 app.use('/api/employee', authRouter);
 app.use('/api/attendances', attendancesRouter);
 app.use('/api/employee-profile', employeeRouter);

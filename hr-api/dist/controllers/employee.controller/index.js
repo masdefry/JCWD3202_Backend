@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findEmployeeProfile = exports.createEmployeeProfile = void 0;
+exports.updateEmployeeProfile = exports.findEmployeeProfile = exports.createEmployeeProfile = void 0;
 const connection_1 = require("../../connection");
+const delete_files_1 = require("../../utils/delete.files");
 const createEmployeeProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
@@ -55,3 +56,38 @@ const findEmployeeProfile = (req, res, next) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.findEmployeeProfile = findEmployeeProfile;
+const updateEmployeeProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    try {
+        const { userId } = req.body.payload;
+        const { birthDate, address } = JSON.parse(req.body.data);
+        const pathImage = `/public/images/${(_b = (_a = req === null || req === void 0 ? void 0 : req.files) === null || _a === void 0 ? void 0 : _a.images[0]) === null || _b === void 0 ? void 0 : _b.filename}`;
+        const findEmployeeProfileByEmployeeId = yield connection_1.prisma.employeeProfile.findFirst({
+            where: {
+                employeeId: userId
+            }
+        });
+        if (!findEmployeeProfileByEmployeeId)
+            throw { isExpose: true, message: 'Employee not found' };
+        (0, delete_files_1.deleteFiles)([findEmployeeProfileByEmployeeId === null || findEmployeeProfileByEmployeeId === void 0 ? void 0 : findEmployeeProfileByEmployeeId.imageProfile]);
+        yield connection_1.prisma.employeeProfile.update({
+            data: {
+                birthDate,
+                address,
+                imageProfile: pathImage
+            },
+            where: {
+                employeeId: userId
+            }
+        });
+        res.status(201).json({
+            success: true,
+            message: 'Update Employee Profile Successful',
+            data: null
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.updateEmployeeProfile = updateEmployeeProfile;

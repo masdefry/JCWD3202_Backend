@@ -9,4 +9,7 @@ employeeRouter.post('/', (0, uploader_1.uploader)(['image/jpg', 'image/jpeg', 'i
     { name: 'images', maxCount: 3 },
 ]), jwt_decode_1.jwtDecode, employee_controller_1.createEmployeeProfile);
 employeeRouter.get('/', jwt_decode_1.jwtDecode, employee_controller_1.findEmployeeProfile);
+employeeRouter.put('/', (0, uploader_1.uploader)(['image/jpg', 'image/jpeg', 'image/png', 'image/webp']).fields([
+    { name: 'images', maxCount: 3 },
+]), jwt_decode_1.jwtDecode, employee_controller_1.updateEmployeeProfile);
 exports.default = employeeRouter;

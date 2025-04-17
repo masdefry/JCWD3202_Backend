@@ -17,6 +17,7 @@ app.use((0, cors_1.default)({
 app.get('/', (req, res) => {
     res.send('<h1>Welcome to Express Typescript Server</h1>');
 });
+app.use('*/images', express_1.default.static('src/public/images'));
 app.use('/api/employee', auth_router_1.default);
 app.use('/api/attendances', attendances_router_1.default);
 app.use('/api/employee-profile', employee_router_1.default);

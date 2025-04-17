@@ -4,12 +4,13 @@ import FormProfile from '@/features/profile/components/FormProfile';
 import instance from '@/utils/axiosInstance';
 import authStore from '@/zustand/store';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 export default function ProfilePage() {
   const setAuth = authStore((state) => state.setAuth);
   const token = authStore((state: any) => state.token);
   const [employeeProfile, setEmployeeProfile] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true);
 
   const handleSignOut = () => {
     setAuth({ _token: null, email: null, role: null });
@@ -22,12 +23,12 @@ export default function ProfilePage() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response)
+      console.log(response);
       setEmployeeProfile(response?.data?.data);
     } catch (error) {
       console.log(error);
-    } finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -35,7 +36,7 @@ export default function ProfilePage() {
     if (token) handleGetEmployeeProfile();
   }, [token]);
 
-  if(loading) return <h1>Loading...</h1>
+  if (loading) return <h1>Loading...</h1>;
 
   return (
     <main>
@@ -44,7 +45,15 @@ export default function ProfilePage() {
         {employeeProfile ? (
           <section className='flex flex-col gap-3'>
             <div className='bg-gray-100 rounded-md p-3 flex items-center justify-between'>
-              <div className='bg-gray-300 w-[100px] h-[100px] rounded-full'></div>
+              <div className='bg-gray-300 w-[100px] h-[100px] rounded-full overflow-hidden'>
+                <Image
+                  src={`http://localhost:5001${employeeProfile?.imageProfile}`}
+                  width={100}
+                  height={100}
+                  alt='Image Profile'
+                  className='w-full h-full object-cover'
+                />
+              </div>
             </div>
             <label>
               <p>Birthdate</p>
@@ -56,9 +65,12 @@ export default function ProfilePage() {
               <p>Address</p>
               <h1 className='text-xl font-bold'>{employeeProfile?.address}</h1>
             </label>
+            <button className='btn bg-red-500 text-white'> 
+              Edit Profile
+            </button>
           </section>
         ) : (
-          <FormProfile />
+          <FormProfile token={token} />
         )}
         <button
           onClick={handleSignOut}

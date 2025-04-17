@@ -177,3 +177,111 @@ d. A nested subquery is a type of join operation that merges results from two ta
 
 
 
+16. If we successfully add a new record to our database, 
+which HTTP response code is most appropriate to use? 
+If we do not have proper access to access a request, what response code should be provided?
+a. 201 and 404
+x. 201 and 401
+c. 200 and 401
+d. 200 and 404
+
+
+
+
+
+17. Consider the TypeScript code above that uses Express JS for routing and middleware. 
+What does the loggerMiddleware function do in this Express JS application? 
+![alt text](1.jpg)
+a. logs the timestamp, HTTP method, and URL of every outgoing response to the console
+x. logs the timestamp, HTTP method, and URL of every incoming request to the console.
+c. logs the timestamp, HTTP method, and URL of every incoming request to a file
+d. handles authentication for protected routes using middleware
+
+
+
+
+
+18. Consider the following Typescript code that uses Express JS, 
+Typescript, and Prisma to fetch data from the products and reviews 
+tables. What does parseInt(req.params.id, 10); 
+do on the line const productId = parseInt(req.params.id, 10); 
+and what will happen if there is an error fetching data from 
+the reviews table?))
+![alt text](2.jpg)
+
+a. This line applies decimal parsing to req.params.id. 
+If the review is not found, the server will respond with a 200 status.
+x. This line converts req.params.id to an integer. 
+If the review is not found, 
+the server will response with a 500 error status
+c. This line applies decimal parsing to req.params.id. 
+If the review is not found, the server will 
+respond with a 500 error status.
+d. This line converts req.params.id to an integer. 
+If the review is not found, it will cause a runtime error and crash.
+
+
+
+
+
+
+19. Based on the three tables, select the answer below to get 
+the names of students who have scores above the average for all 
+courses taken?
+![alt text](3.jpg)
+
+a. SELECT DISTINCT s.student_name FROM Students s 
+INNER JOIN Enrollments e ON s.student_id = e.student_id 
+INNER JOIN Courses c ON e.course_id = c.course_id WHERE e.grade > (SELECT AVG(grade) FROM Enrollments);
+
+b. SELECT s.student_name FROM Students s INNER JOIN Enrollments e ON s.student_id = e.student_id INNER JOIN Courses c ON e.course_id = c.course_id GROUP BY s.student_name WHERE AVG(e.grade) > (SELECT AVG(grade) FROM Enrollments);
+
+c. SELECT s.student_name FROM Students s INNER JOIN Enrollments e ON s.student_id = e.student_id INNER JOIN Courses c ON e.course_id = c.course_id WHERE e.grade > (SELECT AVG(grade) FROM Enrollments GROUP BY course_id);
+
+x. SELECT s.student_name FROM Students s INNER JOIN Enrollments e ON s.student_id = e.student_id INNER JOIN Courses c ON e.course_id = c.course_id WHERE e.grade > (SELECT AVG(grade) FROM Enrollments GROUP BY student_id);
+
+
+
+20. Based on the three tables, how to display the project names, employee names, and total working hours worked by each employee on the "Web Development" project. Sort the results based on total working hours in descending order.
+
+a. SELECT p.project_name, e.employee_name, MAX(a.hours_worked) AS total_hours_worked FROM Projects p JOIN Assignments a ON p.project_id = a.project_id JOIN Employees e ON a.employee_id = e.employee_id WHERE p.project_name = 'Web Development' GROUP BY p.project_name, e.employee_name ORDER BY total_hours_worked DESC;
+
+b. SELECT p.project_name, e.employee_name, AVG(a.hours_worked) AS total_hours_worked FROM Projects p JOIN Assignments a ON p.project_id = a.project_id JOIN Employees e ON a.employee_id = e.employee_id WHERE p.project_name = 'Web Development' GROUP BY p.project_name, e.employee_name ORDER BY total_hours_worked DESC;
+
+c. SELECT p.project_name, e.employee_name, COUNT(a.hours_worked) AS total_hours_worked FROM Projects p JOIN Assignments a ON p.project_id = a.project_id JOIN Employees e ON a.employee_id = e.employee_id WHERE p.project_name = 'Web Development' GROUP BY p.project_name, e.employee_name ORDER BY total_hours_worked DESC;
+
+x. SELECT p.project_name, e.employee_name, SUM(a.hours_worked) AS total_hours_worked FROM Projects p JOIN Assignments a ON p.project_id = a.project_id JOIN Employees e ON a.employee_id = e.employee_id WHERE p.project_name = 'Web Development' GROUP BY p.project_name, e.employee_name ORDER BY total_hours_worked DESC;
+
+
+
+
+
+21. What is the difference between beforeEach and before in unit testing with Jest in Express JS?
+a. beforeEach and before are the same, so they can be used interchangeably.
+x. beforeEach is used to run a block of code before each test is executed, 
+while before runs the code block only once before all tests are executed
+c. before is used to run a block of code before each test is executed, 
+while beforeEach runs the code block only once before all tests are executed.
+d. beforeEach is used to configure the setup before each test, 
+while before is used to configure the setup after each test.
+
+
+
+
+
+22. The `app` service in the docker-compose.yml file is intended for ?
+![alt text](5.jpg)
+
+a. Service for managing Nginx proxy
+b. Service for creating images in Docker
+c. Service for running Node JS applications
+x. Service for creating a network in Docker.
+
+
+
+
+23. What is meant by mocking in the context of unit testing in Express JS?
+a. Mocking is a step in the optimization process of Express JS to improve server response time.
+x. Mocking is a technique to replace external components with fake implementations to isolate the unit being tested
+c. Mocking is the process of creating a replica of an Express JS server to replace the original server during unit testing.
+d. Mocking is the process of creating identical data copies for testing purposes.
