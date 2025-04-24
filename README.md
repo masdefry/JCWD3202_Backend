@@ -12,31 +12,46 @@ Hello, JCWD-3202!
 
         3. Install Express Typescript
 
-                npm i express @types/express @types/node
+                npm install express cors
 
-                npm i -D typescript concurrently nodemon
+                npm install -D typescript ts-node nodemon @types/node @types/express  @types/cors
 
-        4. Install MySql2
-
-                npm i mysql2
-
-        5. Initiate Typescript Configuration
+        4. Initiate Typescript Configuration
 
                 npx tsc --init
 
-        6. Edit `tsconfig.json`:
+        5. Replace `tsconfig.json` with This Configuration:
 
-                - Uncomment rootDir:  "rootDir": "./src"
+               {
 
-                - Uncomment outDir:   "outDir": "./dist"
+                        "compilerOptions": {
+                                "target": "ES6",
+                                "module": "commonjs",
+                                "outDir": "./dist",
+                                "rootDir": "./src",
+                                "strict": true,
+                                "esModuleInterop": true,
+                                "skipLibCheck": true
+                        }
+                }
 
-        7. Replace Property `scripts` on `package.json` with this Code:
+        6. Replace Property `scripts` on `package.json` with this Code:
 
                 "scripts": {
-                        "build": "npx tsc",
+                        "dev": "nodemon",
+                        "build": "tsc",
                         "start": "node dist/index.js",
-                        "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
                 },
+
+        7. Create New File with Name `nodemon.json` and Add this Configuration:
+
+                {
+                        "watch": ["src"],
+                        "ext": "ts",
+                        "ignore": ["dist"],
+                        "exec": "ts-node src/index.ts"
+                }
+
 
         8. Running Express Typescript Projects
 
