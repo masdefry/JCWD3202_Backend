@@ -106,3 +106,25 @@ Hello, JCWD-3202!
         4. Migration Models
 
                 npx prisma migrate dev --name init
+
+<!--  -->
+
+- How to Install Redis on Windows?
+
+        1.  Install WSL using Powershell (Admin)
+
+                    wsl --install
+
+        2.  Execute this Command
+
+                    sudo apt update
+
+                    sudo apt install redis-server
+
+        3.  Running Redis Server
+
+                    sudo service redis-server start
+
+        4.  Test Redis
+
+                    redis-cli ping

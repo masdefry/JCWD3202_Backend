@@ -1,0 +1,7 @@
+[2025-04-25 10:37:53] error: Error:
+[2025-04-25 10:40:09] error: Error:
+[2025-04-25 10:40:38] error: Error:
+[2025-04-25 10:41:12] error: Error:
+[2025-04-25 10:42:08] error: Error: GET /api/products - Oppsie
+[2025-04-25 11:01:36] error: Error: GET /api/products/100 - Product with id 100 not found
+[2025-04-25 11:02:39] error: Error: GET /api/products/100 - Product with id 100 not found
