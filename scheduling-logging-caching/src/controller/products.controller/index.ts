@@ -51,7 +51,7 @@ export const createProduct = async (
     const { name, price, description, stock } = req.body;
 
     let files: Express.Multer.File[] | undefined;
-    let imagesUploaded
+    let imagesUploaded;
     if (req.files) {
       files = Array.isArray(req.files) ? req.files : req.files['images'];
 
@@ -65,10 +65,28 @@ export const createProduct = async (
         imagesUploaded.push(result.res!); // Assuming `res` is Always Defined, Use Non-null Assertion
       }
     }
- 
+
     await prisma.product.create({
-      imageUrl: imagesUploaded[0]
-    })
+      imageUrl: imagesUploaded[0],
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const register = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const result = prisma.$transaction(async (tx) => {
+      tx.user.create();
+
+      tx.points.create();
+
+      return tx.user.findMany();
+    });
   } catch (error) {
     next(error);
   }

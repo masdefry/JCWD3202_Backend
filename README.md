@@ -128,3 +128,19 @@ Hello, JCWD-3202!
         4.  Test Redis
 
                     redis-cli ping
+
+<!--  -->
+
+- How to Install Docker?
+
+        1. Activate Virtualization in BIOS (Ask to ChatGPT)
+
+        2. Enable WSL2
+
+        3. Download Docker Desktop
+
+                        https://www.docker.com/products/docker-desktop/
+
+        4. Install Docker Desktop. Select `Use WSL2 instead of Hyper-V Option` (If Using Windows Home)
+
+        5. Restart Computer
